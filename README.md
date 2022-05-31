@@ -15,7 +15,7 @@ from mock_workflow import run_process
 def process(msg):
     return msg
 
- #Two example messages
+#Two example messages
 topic_in = [{"a":1, "b":2}, {"a":3, "b":4}]
 
 run_process(process_fn=process, topic_in=topic_in)
@@ -26,7 +26,7 @@ run_process(process_fn=process, topic_in=topic_in)
 ```python
 from mock_workflow import Consumer, Producer, setup_mock_workflow
 
- #Two example messages
+#Two example messages
 topic_in = [{"a":1, "b":2}, {"a":3, "b":4}]
 setup_mock_workflow(topic_in)
 
@@ -46,4 +46,19 @@ from mock_workflow import store
 store.insert('a', 'b')
 print(store.get('a'))
 #prints 'b'
+```
+
+### Using the reader
+```python
+from mock_workflow import Reader, setup_mock_workflow
+
+#One hundred example messages
+topic_in = [{"a": i} for i in range(100)]
+
+setup_mock_workflow(topic_in)
+
+reader = Reader.connect()
+
+#Gets the first 50 messages
+reader.batch_get(50, 0)
 ```

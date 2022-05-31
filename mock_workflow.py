@@ -1,5 +1,5 @@
 import time
-
+import warnings
 
 class Consumer:
     def __init__(self):
@@ -12,7 +12,7 @@ class Consumer:
     def __exit__(self, exc_type, exc_value, exc_traceback):
         print('exit method called', exc_value, exc_traceback)
 
-    def connect():
+    def connect(topic=None):
         return Consumer()
 
     def consume(self):
@@ -26,7 +26,7 @@ class Consumer:
             self.i += 1
             return out_msg
         except IndexError:
-            print("No messages left in topic_in. Going to sleep")
+            warnings.warn("No messages left in topic_in. Going to sleep")
             while True:
                 time.sleep(60)
 
@@ -44,7 +44,7 @@ class Producer:
     def __exit__(self, exc_type, exc_value, exc_traceback):
         print('exit method called', exc_value, exc_traceback)
 
-    def connect():
+    def connect(topic=None):
         return Producer()
 
     def produce(self, msg):
@@ -68,6 +68,26 @@ class Store:
         self.s[k] = v
 
 store = Store()
+
+class Reader:
+    def __init__(self):
+        pass
+
+    def connect(timeout=None, topic=None):
+        return Reader()
+
+    def batch_get(self, batch_size, offset):
+        multiplier = 1
+        add = 0
+        if batch_size < 0:
+            multiplier = -1
+            add = 1
+        batch = [Message(TOPIC_IN[(i+add)*multiplier]) for i in range(offset, offset+(batch_size*multiplier))]
+        if len(batch) < batch_size:
+            warnings.warn("Couldn't fill entire batch")
+
+        return batch
+
 
 def setup_mock_workflow(topic_in):
     global TOPIC_IN
