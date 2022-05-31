@@ -1,4 +1,4 @@
-###Setup
+### Setup
 
 To setup up using pip simply run
 
@@ -7,7 +7,7 @@ pip install git+https://github.com/FlorentijnKnol/mock_workflow.git
 ```
 
 
-###Using process()
+### Using process()
 
 ```python
 from mock_workflow import run_process
@@ -21,7 +21,7 @@ topic_in = [{"a":1, "b":2}, {"a":3, "b":4}]
 run_process(process_fn=process, topic_in=topic_in)
 ```
 
-###Explicitly defining producer / consumer
+### Explicitly defining producer / consumer
 
 ```python
 from mock_workflow import Consumer, Producer, setup_mock_workflow
@@ -39,7 +39,7 @@ while True:
     consumer.ack(msg)
 ```
 
-###Using the store
+### Using the store
 ```python
 from mock_workflow import store
 
